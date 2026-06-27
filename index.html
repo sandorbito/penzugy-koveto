@@ -91,7 +91,7 @@ td.actions{white-space:nowrap}
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
 <script>
 // ── Data layer ──
-const LS=(()=>{let mem={};const ok=(()=>{try{localStorage.setItem('_t','1');localStorage.removeItem('_t');return true}catch(e){return false}})();return {get(k,d){try{if(ok){const v=localStorage.getItem('penzugy_'+k);return v?JSON.parse(v):d}}catch(e){}return mem[k]!==undefined?mem[k]:d},set(k,v){mem[k]=v;if(ok)try{localStorage.setItem('penzugy_'+k,JSON.stringify(v))}catch(e){}}}})();
+const LS=(()=>{let mem={};const ok=(()=>{try{sessionStorage.setItem('_t','1');sessionStorage.removeItem('_t');return true}catch(e){return false}})();return {get(k,d){try{if(ok){const v=sessionStorage.getItem('penzugy_'+k);return v?JSON.parse(v):d}}catch(e){}return mem[k]!==undefined?mem[k]:d},set(k,v){mem[k]=v;if(ok)try{sessionStorage.setItem('penzugy_'+k,JSON.stringify(v))}catch(e){}}}})();
 
 function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,8)}
 
@@ -358,8 +358,8 @@ function saveTx(e,editId){
   const status=cat&&cat.hasStatus?document.getElementById('tx-status').value:null;
   if(!amt||amt<=0)return alert('Adj meg pozitív összeget!');
   const all=txs();
-  if(editId){const i=all.findIndex(t=>t.id===editId);if(i>=0){all[i]={...all[i],date:d,amount:amt,type,catId,accId,note,status}}}
-  else all.push({id:uid(),date:d,amount:amt,type,catId,accId,note,status});
+  if(editId){const i=all.findIndex(t=>t.id===editId);if(i>=0){all[i]={...all[i],date:d,amount:amt,type,categoryId:catId,accountId:accId,note,status}}}
+  else all.push({id:uid(),date:d,amount:amt,type,categoryId:catId,accountId:accId,note,status});
   LS.set('transactions',all);
   hideModal();renderTransactions();
 }
